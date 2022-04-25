@@ -1,0 +1,8 @@
+certifi
+chardet
+idna
+requests
+selenium
+webdriver-manager
+tabulate
+tqdm
