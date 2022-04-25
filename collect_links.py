@@ -12,7 +12,8 @@ import os.path as osp
 
 
 class CollectLinks:
-    def __init__(self, no_gui=False, proxy=None):
+    def __init__(self, no_gui=False, proxy=None, print_url=False):
+        self.print_url = print_url
         executable = ''
 
         if platform.system() == 'Windows':
@@ -128,7 +129,10 @@ class CollectLinks:
 
                 if src is not None:
                     links.append(src)
-                    print('%d: %s' % (count, src))
+                    if self.print_url:
+                        print('%d: %s' % (count, src))
+                    else:
+                        print('%s: %d' % (keyword, count))
                     count += 1
                     with open(osp.join("./collected_links", keyword+".txt"), "a+") as f_save:
                         f_save.write(src+"\n")

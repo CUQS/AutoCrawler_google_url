@@ -27,7 +27,7 @@ class Sites:
 
 class AutoCrawler:
     def __init__(self, skip_already_exist=True, n_threads=4, do_google=True, download_path='collected_links',
-                 face=False, no_gui=False, limit=0, proxy_list=None):
+                 face=False, no_gui=False, limit=0, proxy_list=None, print_url=False):
         """
         :param skip_already_exist: Skips keyword already downloaded before. This is needed when re-downloading.
         :param n_threads: Number of threads to download.
@@ -48,6 +48,7 @@ class AutoCrawler:
         self.no_gui = no_gui
         self.limit = limit
         self.proxy_list = proxy_list if proxy_list and len(proxy_list) > 0 else None
+        self.print_url = print_url
 
         os.makedirs('./{}'.format(self.download_path), exist_ok=True)
 
@@ -125,7 +126,7 @@ class AutoCrawler:
             proxy = None
             if self.proxy_list:
                 proxy = random.choice(self.proxy_list)
-            collect = CollectLinks(no_gui=self.no_gui, proxy=proxy)  # initialize chrome driver
+            collect = CollectLinks(no_gui=self.no_gui, proxy=proxy, print_url=self.print_url)  # initialize chrome driver
         except Exception as e:
             print('Error occurred while initializing chromedriver - {}'.format(e))
             return
@@ -191,6 +192,7 @@ if __name__ == '__main__':
     parser.add_argument('--proxy-list', type=str, default='',
                         help='The comma separated proxy list like: "socks://127.0.0.1:1080,http://127.0.0.1:1081". '
                              'Every thread will randomly choose one from the list.')
+    parser.add_argument('--print_url', action='store_true')
     args = parser.parse_args()
 
     _skip = False if str(args.skip).lower() == 'false' else True
@@ -198,6 +200,7 @@ if __name__ == '__main__':
     _face = False if str(args.face).lower() == 'false' else True
     _limit = int(args.limit)
     _proxy_list = args.proxy_list.split(',')
+    _print_url = args.print_url
 
     no_gui_input = str(args.no_gui).lower()
     if no_gui_input in ['auto' or 'true']:
@@ -210,5 +213,5 @@ if __name__ == '__main__':
             .format(_skip, _threads, _face, _no_gui, _limit, _proxy_list))
 
     crawler = AutoCrawler(skip_already_exist=_skip, n_threads=_threads,
-                          face=_face, no_gui=_no_gui, limit=_limit, proxy_list=_proxy_list)
+                          face=_face, no_gui=_no_gui, limit=_limit, proxy_list=_proxy_list, print_url=_print_url)
     crawler.do_crawling()

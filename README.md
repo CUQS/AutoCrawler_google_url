@@ -30,19 +30,22 @@ python main.py --skip true --threads 2 --face false --no_gui auto --limit 0
 ```
 
 ```
---skip true        Skips keyword if downloaded directory already exists. This is needed when re-downloading.
+--skip true              Skips keyword if downloaded directory already exists. This is needed
+                         when re-downloading.
 
---threads 4        Number of threads to download.
+--threads 4              Number of threads to download.
 
---face false       Face search mode
+--face false             Face search mode
 
---no_gui auto      No GUI mode. (headless mode) Acceleration for full_resolution mode, but unstable on thumbnail mode.
-                   Default: "auto" - false if full=false, true if full=true
-                   (can be used for docker linux system)
+--no_gui auto            No GUI mode. (headless mode) Acceleration for full_resolution mode,
+                         but unstable on thumbnail mode.
+                         Default: "auto" - false if full=false, true if full=true
+                         (can be used for docker linux system)
                    
---limit 0          Maximum count of images to download per site. (0: infinite)
---proxy-list ''    The comma separated proxy list like: "socks://127.0.0.1:1080,http://127.0.0.1:1081".
-                   Every thread will randomly choose one from the list.
+--limit 0                Maximum count of images to download per site. (0: infinite)
+--proxy-list ''          The comma separated proxy list like: "socks://127.0.0.1:1080,http://127.0.0.1:1081".
+                         Every thread will randomly choose one from the list.
+--print_url false        print download process with url      
 ```
 
 # Remote crawling through SSH on your server
