@@ -1,7 +1,9 @@
+from concurrent.futures import thread
 import os, json
 import os.path as osp
 import threading
 import time
+from sympy import re
 from tqdm import tqdm
 from tabulate import tabulate
 from datetime import datetime
@@ -9,6 +11,7 @@ from datetime import datetime
 import requests
 import base64
 import shutil
+import argparse
 
 
 threading_end_count = [0]
@@ -32,10 +35,10 @@ def chunkify(lst, n):
 
 class NameMeta:
     def __init__(self, meta_file):
-        self.name_meta = json.load(open(meta_file, 'r'))
+        self.name_meta = json.load(open(meta_file, 'r', encoding='utf-8-sig'))
     
     def print_name(self, key):
-        print("--> {}: {} ...".format(self.name_meta[key]["gender"], self.name_meta[key]["name"]))
+        print("--> {} ...".format(self.name_meta[key]["name"]))
 
 
 def base64_to_object(src):
@@ -139,20 +142,27 @@ def download_process(thread_list, thread_idx, top_download=100):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--download_single', type=str, default="", help="download single file by name tag")
+    parser.add_argument('--download_all', action='store_true', help="download all files")
+    args = parser.parse_args()
+
     thread_num = 4
     top_download = 100
 
     if not osp.exists(dst_root):
         os.makedirs(dst_root)
 
-    name_meta = NameMeta("./name_meta.json")
+    name_meta = NameMeta("./keywords_collect/name_meta.json")
     thread_list_all = []
 
     print("--> get file links...")
 
     for fi in tqdm(os.listdir(file_root)):
+        if not args.download_all and fi.split(".")[0] != args.download_single:
+            continue
         thread_list_all.append(fi)
-    
+
     thread_list_split = chunkify(thread_list_all, thread_num)
     status = [[0, len(ti), 0, 0] for ti in thread_list_split]
     status_update_time = [time.time(), time.time()]

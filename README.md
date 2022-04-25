@@ -16,10 +16,14 @@
 5. URL links will be downloaded to 'collected_links' directory.
 
 6. **Run "check_collected.py"**
-  > `python check_collected.py`
+    > `python check_collected.py`
 
 7. **Run "download_links.py"**
-  > `python download_links.py`
+    > `python download_links.py --download_all`
+
+    - Download single keyword
+  
+    > `python download_links.py --download_single p2`
 
 # Arguments
 usage:
