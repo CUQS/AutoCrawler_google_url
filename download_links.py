@@ -33,14 +33,6 @@ def chunkify(lst, n):
     return [lst[i::n] for i in range(n)]
 
 
-class NameMeta:
-    def __init__(self, meta_file):
-        self.name_meta = json.load(open(meta_file, 'r', encoding='utf-8-sig'))
-    
-    def print_name(self, key):
-        print("--> {} ...".format(self.name_meta[key]["name"]))
-
-
 def base64_to_object(src):
     header, encoded = str(src).split(',', 1)
     data = base64.decodebytes(bytes(encoded, encoding='utf-8'))
@@ -87,8 +79,6 @@ def download_process(thread_list, thread_idx, top_download=100):
 
         if not osp.exists(dst_dir):
             os.makedirs(dst_dir)
-
-        # name_meta.print_name(key)
 
         file_exist = [fi.split(".")[0] for fi in os.listdir(dst_dir)]
 
@@ -153,7 +143,6 @@ if __name__ == "__main__":
     if not osp.exists(dst_root):
         os.makedirs(dst_root)
 
-    name_meta = NameMeta("./keywords_collect/name_meta.json")
     thread_list_all = []
 
     print("--> get file links...")
