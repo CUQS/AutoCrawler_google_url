@@ -11,14 +11,26 @@
 
 3. Write search keywords in `keywords_collect/name_meta.json`
 
-4. **Run "main.py"**
+4. Permission
 
-5. URL links will be downloaded to 'collected_links' directory.
+    ```bash
+    chmod 755 chromedriver/*
+    ```
 
-6. **Run "check_collected.py"**
+5. **Run "main.py"**
+
+    ```bash
+    python3 main.py [--skip true] [--threads 4] [--face false] [--no_gui auto] [--limit 0]
+    # example
+    python main.py --skip true --threads 2 --face false --no_gui auto --limit 0
+    ```
+
+6. URL links will be downloaded to 'collected_links' directory.
+
+7. **Run "check_collected.py"**
     > `python check_collected.py`
 
-7. **Run "download_links.py"**
+8. **Run "download_links.py"**
     > `python download_links.py --download_all`
 
     - Download single keyword
@@ -26,12 +38,6 @@
     > `python download_links.py --download_single p2`
 
 # Arguments
-usage:
-```
-python3 main.py [--skip true] [--threads 4] [--face false] [--no_gui auto] [--limit 0]
-# example
-python main.py --skip true --threads 2 --face false --no_gui auto --limit 0
-```
 
 ```
 --skip true              Skips keyword if downloaded directory already exists. This is needed
