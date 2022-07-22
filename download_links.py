@@ -1,9 +1,7 @@
-from concurrent.futures import thread
-import os, json
+import os
 import os.path as osp
 import threading
 import time
-from sympy import re
 from tqdm import tqdm
 from tabulate import tabulate
 from datetime import datetime
@@ -109,15 +107,6 @@ def download_process(thread_list, thread_idx, top_download=100):
             else:
                 count += 1
             status[thread_idx][2] = idx_t
-            if status_update_time[1] - status_update_time[0] > 5:
-                print("|--------------+--------------+------------+------------|")
-                now = datetime.now()
-                date_time = now.strftime("%Y/%m/%d,  %H:%M:%S")
-                print("|------------------{}----------------|".format(date_time))
-                print("|--------------+--------------+------------+------------|")
-                print(tabulate(status, headers=['folder now', 'folder all', 'link now', 'link all'], tablefmt='orgtbl'))
-                print("|--------------+--------------+------------+------------|")
-                status_update_time[0] = time.time()
             # if count >= top_download + 1:
             #     break
         
@@ -160,10 +149,18 @@ if __name__ == "__main__":
         print(f"--> thread {idx} start ...")
         th = threading.Thread(target=download_process, args=(ti, idx, top_download,))
         th.start()
-        time.sleep(3)
+        time.sleep(1)
     
     while threading_end_count[0] < thread_num:
         status_update_time[1] = time.time()
-        continue
+        print("|--------------+--------------+------------+------------|")
+        now = datetime.now()
+        date_time = now.strftime("%Y/%m/%d,  %H:%M:%S")
+        print("|------------------{}----------------|".format(date_time))
+        print("|--------------+--------------+------------+------------|")
+        print(tabulate(status, headers=['folder now', 'folder all', 'link now', 'link all'], tablefmt='orgtbl'))
+        print("|--------------+--------------+------------+------------|")
+        status_update_time[0] = time.time()
+        time.sleep(5)
 
 
